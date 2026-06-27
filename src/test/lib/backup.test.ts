@@ -1,5 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { registrosAJson, registrosACsv, importarRespaldo } from '../../lib/backup'
+import { compartirODescargarRespaldo, registrosAJson, registrosACsv, importarRespaldo } from '../../lib/backup'
+import { guardarConfig } from '../../db/config'
+import { listarRegistros } from '../../db/registros'
 import type { Registro } from '../../types'
 import { VERSION_DATOS } from '../../types'
 
@@ -165,5 +167,69 @@ describe('importarRespaldo', () => {
     const total = await importarRespaldo(archivo)
     expect(total).toBe(1)
     expect(upsertPorFecha).toHaveBeenCalledTimes(1)
+  })
+})
+
+// ── compartirODescargarRespaldo ───────────────────────────────────────────────
+
+describe('compartirODescargarRespaldo', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    vi.restoreAllMocks()
+    Object.defineProperty(navigator, 'canShare', {
+      configurable: true,
+      value: undefined,
+    })
+    Object.defineProperty(navigator, 'share', {
+      configurable: true,
+      value: undefined,
+    })
+  })
+
+  it('usa navigator.share cuando el navegador puede compartir archivos', async () => {
+    const share = vi.fn(async () => undefined)
+    const canShare = vi.fn(() => true)
+    const registros = [crearRegistro('2026-06-27')]
+    vi.mocked(listarRegistros).mockResolvedValueOnce(registros)
+
+    Object.defineProperty(navigator, 'canShare', {
+      configurable: true,
+      value: canShare,
+    })
+    Object.defineProperty(navigator, 'share', {
+      configurable: true,
+      value: share,
+    })
+
+    const resultado = await compartirODescargarRespaldo()
+
+    expect(resultado).toBe('compartido')
+    expect(canShare).toHaveBeenCalledWith({ files: expect.arrayContaining([expect.any(File), expect.any(File)]) })
+    expect(share).toHaveBeenCalledWith(expect.objectContaining({
+      title: 'Respaldo Elss',
+      text: 'Respaldo de mis registros de Elss.',
+      files: expect.arrayContaining([expect.any(File), expect.any(File)]),
+    }))
+    expect(guardarConfig).toHaveBeenCalledWith({ ultimo_respaldo: expect.any(String) })
+  })
+
+  it('descarga JSON y CSV cuando no puede compartir archivos', async () => {
+    const createObjectURL = vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:respaldo')
+    const revokeObjectURL = vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => undefined)
+    const click = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => undefined)
+    vi.mocked(listarRegistros).mockResolvedValueOnce([crearRegistro('2026-06-27')])
+
+    Object.defineProperty(navigator, 'canShare', {
+      configurable: true,
+      value: vi.fn(() => false),
+    })
+
+    const resultado = await compartirODescargarRespaldo()
+
+    expect(resultado).toBe('descargado')
+    expect(createObjectURL).toHaveBeenCalledTimes(2)
+    expect(click).toHaveBeenCalledTimes(2)
+    expect(revokeObjectURL).toHaveBeenCalledTimes(2)
+    expect(guardarConfig).toHaveBeenCalledWith({ ultimo_respaldo: expect.any(String) })
   })
 })
