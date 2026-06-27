@@ -24,6 +24,7 @@ export default defineConfig({
         name: 'Elss',
         short_name: 'Elss',
         description: 'Registra cómo amaneces cada mañana',
+        id: './',
         theme_color: '#6B5FB0',
         background_color: '#FCFBFE',
         display: 'standalone',
