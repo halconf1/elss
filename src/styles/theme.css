@@ -1,0 +1,23 @@
+/* ── Importar fuentes offline ─────────────────────────────────────────────── */
+@import '@fontsource/fraunces/500.css';
+@import '@fontsource/nunito/400.css';
+@import '@fontsource/nunito/500.css';
+
+/* ── Variables de paleta y tipografía ────────────────────────────────────── */
+:root {
+  /* Colores */
+  --bg:        #FCFBFE;
+  --border:    #E9E6F5;
+  --accent:    #6B5FB0;
+  --text:      #4A4368;
+  --muted:     #9A8FC9;
+  --muted-2:   #ABA1D4;
+  --day-label: #BDB4E0;
+  --btn-bg:    #E4DEF6;
+  --btn-text:  #6B5FB0;
+  --radius:    16px;
+
+  /* Tipografía */
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body:    'Nunito', system-ui, sans-serif;
+}
