@@ -12,6 +12,10 @@ html, body {
   overscroll-behavior: none;
 }
 
+html {
+  background: var(--bg);
+}
+
 body {
   background: var(--bg);
   color: var(--text);
@@ -26,8 +30,6 @@ body {
   min-height: 100%;
   display: flex;
   flex-direction: column;
-  max-width: 480px;
-  margin: 0 auto;
   background: var(--bg);
 }
 
@@ -47,6 +49,13 @@ button {
   border: none;
   border-radius: var(--radius);
   color: inherit;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: transform 120ms ease, background-color 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+}
+
+button:active {
+  transform: scale(0.98);
 }
 
 button:focus-visible {
@@ -100,8 +109,9 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
 .screen {
   width: 100%;
   min-height: 100dvh;
-  padding: 1.1rem;
-  padding-bottom: calc(5.8rem + env(safe-area-inset-bottom));
+  max-width: 480px;
+  margin: 0 auto;
+  padding: calc(1rem + env(safe-area-inset-top)) 1.1rem calc(6.2rem + env(safe-area-inset-bottom));
 }
 
 .loading-screen,
@@ -254,6 +264,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
   border: 1px solid var(--border);
   border-radius: 12px;
   color: var(--text);
+  box-shadow: 0 4px 14px rgba(74, 67, 104, 0.04);
 }
 
 .day-cell span {
@@ -278,24 +289,42 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
   width: min(100%, 480px);
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 0.25rem;
-  padding: 0.55rem 0.75rem calc(0.75rem + env(safe-area-inset-bottom));
-  background: rgba(252, 251, 254, 0.94);
+  gap: 0.35rem;
+  padding: 0.5rem 0.75rem calc(0.65rem + env(safe-area-inset-bottom));
+  background: rgba(252, 251, 254, 0.96);
   border-top: 1px solid var(--border);
   backdrop-filter: blur(14px);
+  box-shadow: 0 -10px 30px rgba(74, 67, 104, 0.08);
+  z-index: 20;
 }
 
 .nav-item {
-  min-height: 2.6rem;
-  border-radius: 12px;
+  min-height: 3.25rem;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 0.12rem;
+  border-radius: 14px;
   background: transparent;
   color: var(--muted);
-  font-size: 0.82rem;
+  font-size: 0.72rem;
+  line-height: 1.1;
 }
 
 .nav-item.active {
   background: var(--btn-bg);
   color: var(--btn-text);
+}
+
+.nav-icon {
+  display: block;
+  width: 1.3rem;
+  height: 1.3rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
 }
 
 .form-screen,
@@ -373,6 +402,7 @@ legend,
   background: #FFFFFF;
   border: 1px solid var(--border);
   border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(74, 67, 104, 0.045);
 }
 
 .soft-panel h3 {

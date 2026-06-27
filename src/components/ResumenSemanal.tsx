@@ -18,7 +18,7 @@ export default function ResumenSemanal({ registros }: Props) {
     <main className="screen content-screen">
       <h2>Resumen</h2>
       {resumen.total === 0 ? (
-        <p className="empty-text">Cuando registres tus mañanas, aquí verás una mirada tranquila de los últimos días.</p>
+        <p className="empty-text">Aquí verás cómo han sido tus mañanas.</p>
       ) : (
         <section className="soft-panel">
           <p>Esta semana amaneciste bien {resumen.buenos} de {resumen.total} días.</p>
