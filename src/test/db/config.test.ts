@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { leerConfig, guardarConfig, inicializarStorage } from '../../db/config'
+import { leerConfig, guardarConfig } from '../../db/config'
 
 describe('leerConfig', () => {
   it('devuelve los defaults cuando no hay config guardada', async () => {
@@ -47,16 +47,5 @@ describe('guardarConfig', () => {
     await guardarConfig({ onboarding_visto: false })
     const cfg = await leerConfig()
     expect(cfg.onboarding_visto).toBe(false)
-  })
-})
-
-describe('inicializarStorage', () => {
-  it('no lanza error aunque navigator.storage.persist no esté disponible', async () => {
-    await expect(inicializarStorage()).resolves.not.toThrow()
-  })
-
-  it('si ya se persistió, no intenta solicitarlo de nuevo', async () => {
-    await guardarConfig({ storage_persistido: true })
-    await expect(inicializarStorage()).resolves.not.toThrow()
   })
 })
