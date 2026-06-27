@@ -1,32 +1,27 @@
-# React + TypeScript + Vite
+# Elss
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Elss es una PWA local-first para registrar como amaneces cada manana, revisar tendencias semanales y conservar respaldos en JSON/CSV. Los datos se guardan en IndexedDB dentro del navegador.
 
-Currently, two official plugins are available:
+## Scripts
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm install
+npm run dev
+npm test
+npm run coverage
+npm run lint
+npm run build
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Calidad
+
+- Tests con Vitest y React Testing Library.
+- IndexedDB en tests con `fake-indexeddb`.
+- Cobertura enfocada en `src/lib/**` y `src/db/**`.
+- Build de produccion con Vite y PWA generada por `vite-plugin-pwa`.
+
+## Deploy
+
+El build estatico se publica en GitHub Pages desde la rama `gh-pages`.
+
+URL: https://halconf1.github.io/elss/
