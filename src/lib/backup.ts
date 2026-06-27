@@ -77,13 +77,17 @@ export async function compartirODescargarRespaldo(): Promise<ResultadoRespaldo> 
   const archivos = [jsonFile, csvFile]
 
   if (navigator.canShare?.({ files: archivos }) && navigator.share) {
-    await navigator.share({
-      title: 'Respaldo Elss',
-      text: 'Respaldo de mis registros de Elss.',
-      files: archivos,
-    })
-    await guardarConfig({ ultimo_respaldo: new Date().toISOString() })
-    return 'compartido'
+    try {
+      await navigator.share({
+        title: 'Respaldo Elss',
+        text: 'Respaldo de mis registros de Elss.',
+        files: archivos,
+      })
+      await guardarConfig({ ultimo_respaldo: new Date().toISOString() })
+      return 'compartido'
+    } catch {
+      // Si el share sheet falla o se cancela, mantenemos el camino de respaldo.
+    }
   }
 
   descargarBlob(jsonFile, jsonFile.name)

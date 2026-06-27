@@ -232,4 +232,32 @@ describe('compartirODescargarRespaldo', () => {
     expect(revokeObjectURL).toHaveBeenCalledTimes(2)
     expect(guardarConfig).toHaveBeenCalledWith({ ultimo_respaldo: expect.any(String) })
   })
+
+  it('descarga JSON y CSV si navigator.share falla', async () => {
+    const createObjectURL = vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:respaldo')
+    const revokeObjectURL = vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => undefined)
+    const click = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => undefined)
+    const share = vi.fn(async () => {
+      throw new DOMException('Cancelado', 'AbortError')
+    })
+    vi.mocked(listarRegistros).mockResolvedValueOnce([crearRegistro('2026-06-27')])
+
+    Object.defineProperty(navigator, 'canShare', {
+      configurable: true,
+      value: vi.fn(() => true),
+    })
+    Object.defineProperty(navigator, 'share', {
+      configurable: true,
+      value: share,
+    })
+
+    const resultado = await compartirODescargarRespaldo()
+
+    expect(resultado).toBe('descargado')
+    expect(share).toHaveBeenCalledTimes(1)
+    expect(createObjectURL).toHaveBeenCalledTimes(2)
+    expect(click).toHaveBeenCalledTimes(2)
+    expect(revokeObjectURL).toHaveBeenCalledTimes(2)
+    expect(guardarConfig).toHaveBeenCalledWith({ ultimo_respaldo: expect.any(String) })
+  })
 })

@@ -96,9 +96,14 @@ export default function App() {
   }
 
   async function aceptarRespaldo() {
-    await compartirODescargarRespaldo()
-    await actualizarConfig({ primer_respaldo_ofrecido: true, ultimo_respaldo: new Date().toISOString() })
-    setBackupPrompt(null)
+    try {
+      await compartirODescargarRespaldo()
+      await actualizarConfig({ primer_respaldo_ofrecido: true, ultimo_respaldo: new Date().toISOString() })
+    } catch {
+      await actualizarConfig({ primer_respaldo_ofrecido: true })
+    } finally {
+      setBackupPrompt(null)
+    }
   }
 
   async function posponerRespaldo() {
