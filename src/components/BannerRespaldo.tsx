@@ -1,17 +1,25 @@
 interface Props {
+  titulo?: string
+  texto?: string
   onAceptar: () => void
   onPosponer: () => void
 }
 
-export default function BannerRespaldo({ onAceptar, onPosponer }: Props) {
+export default function BannerRespaldo({
+  titulo = 'Tu primer registro quedó guardado.',
+  texto = '¿Quieres compartir un respaldo para no perderlo si cambias de teléfono?',
+  onAceptar,
+  onPosponer,
+}: Props) {
   return (
     <div style={s.fondo}>
       <div style={s.tarjeta}>
-        <p style={s.emoji} aria-hidden>☀️</p>
-        <p style={s.titulo}>Tu primer registro quedó guardado.</p>
-        <p style={s.texto}>
-          ¿Quieres compartir un respaldo para no perderlo si cambias de teléfono?
-        </p>
+        <svg style={s.icono} width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
+          <circle cx="17" cy="17" r="7" fill="none" stroke="var(--accent)" strokeWidth="1.7" />
+          <path d="M17 3v5M17 26v5M3 17h5M26 17h5M7.1 7.1l3.5 3.5M23.4 23.4l3.5 3.5M26.9 7.1l-3.5 3.5M10.6 23.4l-3.5 3.5" fill="none" stroke="var(--muted)" strokeLinecap="round" strokeWidth="1.7" />
+        </svg>
+        <p style={s.titulo}>{titulo}</p>
+        <p style={s.texto}>{texto}</p>
         <div style={s.botones}>
           <button onClick={onAceptar} style={s.btnPrincipal}>
             Sí, guardar respaldo
@@ -46,9 +54,8 @@ const s: Record<string, React.CSSProperties> = {
     flexDirection: 'column',
     gap: '0.75rem',
   },
-  emoji: {
-    fontSize: '2rem',
-    lineHeight: 1,
+  icono: {
+    display: 'block',
   },
   titulo: {
     fontFamily: 'var(--font-display)',

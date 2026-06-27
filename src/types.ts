@@ -78,7 +78,7 @@ export const LABELS_ESTADO: Record<EstadoGeneral, string> = {
   bien: 'Bien',
   regular: 'Regular',
   molestia: 'Con molestia',
-  mucho_dolor: 'Con mucho malestar',
+  mucho_dolor: 'Con mucho dolor',
 }
 
 export const LABELS_LADO: Record<Lado, string> = {
