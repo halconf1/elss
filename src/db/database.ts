@@ -18,6 +18,12 @@ interface ElssDB {
 
 let _db: IDBPDatabase<ElssDB> | null = null
 
+/** Solo para tests: cierra y descarta la conexión actual. */
+export function resetDB(): void {
+  _db?.close()
+  _db = null
+}
+
 export async function getDB(): Promise<IDBPDatabase<ElssDB>> {
   if (_db) return _db
 
